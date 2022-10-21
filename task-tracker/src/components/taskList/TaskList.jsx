@@ -1,21 +1,32 @@
 import React from "react";
-import { RiDeleteBack2Fill } from "react";
+import { RiDeleteBack2Fill } from "react-icons/ri";
 import axios from "axios";
 
-const TaskList = ({ task }) => {
+const TaskList = ({ task, getTask }) => {
+  const deleteTask = async (id) => {
+    const url = "https://63516c99dfe45bbd55bfd9a2.mockapi.io/api/tasks";
+    try {
+      await axios.delete(`${url}/${id}`);
+    } catch (error) {}
+    getTask();
+  };
+
   return (
     <div>
       {task.map((item) => {
-        const { Date, task, id } = item;
+        const { id, task, date } = item;
         return (
-          <div className="mt-3 d-flex justify-content-between bg-secondary rounded-2 p-2 ">
+          <div
+            key={id}
+            className="mt-2 d-flex justify-content-between bg-secondary rounded-2 p-2"
+          >
             <div>
               <h4>{task}</h4>
-              <p>{Date}</p>
+              <p>{date}</p>
             </div>
-
             <div>
               <RiDeleteBack2Fill
+                onClick={() => deleteTask(id)}
                 style={{
                   cursor: "pointer",
                   marginRight: "20px",
